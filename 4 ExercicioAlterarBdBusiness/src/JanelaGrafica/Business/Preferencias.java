@@ -10,26 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 
-public class Preferencias {
+public class Preferencias {	
 	
-	private JFrame minhaJanela;
-	private JList<String> lstbxPreferencias;
-	private DefaultTableModel modelo;
-	
-	// Construtor
-	public Preferencias(JFrame minhaJanela, JList<String> lstbxPreferencias, DefaultTableModel modelo) {
-		this.minhaJanela = minhaJanela;
-		this.lstbxPreferencias = lstbxPreferencias;
-		this.modelo = modelo;
-	}
+	Boolean resultado = false;
 
-	public void impTxtWhile() {
+	public DefaultListModel<String> impTxtWhile()  throws Exception {
 		try {
 			File file = new File("C:\\Curso programar\\Java\\Preferencias\\importar texto.txt");
 			List<String> arrLinhaDoArquivo = Files.readAllLines(file.toPath());
@@ -45,14 +32,16 @@ public class Preferencias {
 				
 				linhaDoarquivo++;
 				
-			}lstbxPreferencias.setModel(modelo);
+			}
+
+			return modelo;
 			
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}
 	}
 	
-	public void impTxtDoWhile() {
+	public DefaultListModel<String> impTxtDoWhile()  throws Exception {
 		try {
 			File file = new File("C:\\Curso programar\\Java\\Preferencias\\importar texto.txt");
 			
@@ -70,14 +59,14 @@ public class Preferencias {
 				linhaDoarquivo++;
 			} while (linhaDoarquivo < totalDeLinhaDoArquivo);
 			
-		    lstbxPreferencias.setModel(modelo);
+		    return modelo;
 		    
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}
 	}
 	
-	public void impTxtFor() {
+	public DefaultListModel<String> impTxtFor() throws Exception {
 		try {
 			File file = new File("C:\\Curso programar\\Java\\Preferencias\\importar texto.txt");
 			
@@ -95,14 +84,14 @@ public class Preferencias {
 				
 			}				
 			
-		    lstbxPreferencias.setModel(modelo);
+		    return modelo;
 		    
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}
 	}
 	
-	public void impTxtForEachInter() {
+	public DefaultListModel<String> impTxtForEachInter() throws Exception {
 		try {
 			File file = new File("C:\\Curso programar\\Java\\Preferencias\\importar texto.txt");
 			
@@ -117,14 +106,14 @@ public class Preferencias {
 				modelo.addElement(linha);
 			}
 			
-		    lstbxPreferencias.setModel(modelo);
+			return modelo;
 		    
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}
 	}
 	
-	public void impTxtForEachExter() {
+	public DefaultListModel<String> impTxtForEachExter() throws Exception {
 		try {
 			File file = new File("C:\\Curso programar\\Java\\Preferencias\\importar texto.txt");
 			
@@ -137,14 +126,14 @@ public class Preferencias {
 			arrLinhaDoArquivo.forEach(linha -> modelo.addElement(linha));
 
 			
-		    lstbxPreferencias.setModel(modelo);
+			return modelo;
 		    
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO: " + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}
 	}
 	
-	public void impBdConect() {
+	public DefaultListModel<String> impBdConect() throws Exception {
 		Connection conn = null;
 		try {
 			DefaultListModel<String> modelo =  new DefaultListModel<String>();
@@ -162,25 +151,28 @@ public class Preferencias {
 			
 			while (rs.next()) {
 				modelo.addElement(rs.getString("Descricao"));
-				
-			}lstbxPreferencias.setModel(modelo);
+			}
 			
-		} catch (Exception ex) {
-			JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O BANCO DE DADOS" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			return modelo;
+		}
+			    
+		catch (Exception ex) {
+				throw ex;
 		}finally {
 			if (conn != null); {
 				try {
 					conn.close();
-				} catch (Exception ex) {
-					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO FECHAR CONEXÃO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+				}catch (Exception ex) {
+						throw ex;
 				}
 			}
 		}				
 	}
 	
-	public void impBdDesconect() {
+	public DefaultListModel<String> impBdDesconect() throws Exception {
 		Connection conn = null;
 		List<String> dadosLocais = new ArrayList<String>();
+		
 		try {
 			DefaultListModel<String> modelo =  new DefaultListModel<String>();
 			String servDriver = "jdbc:ucanaccess://";
@@ -191,7 +183,7 @@ public class Preferencias {
 			
 			String sql = "SELECT Descricao FROM Preferencias_3";
 			
-			PreparedStatement ps = conn.prepareStatement(sql);
+			PreparedStatement ps = conn.prepareStatement(sql);			
 			
 			ResultSet rs = ps.executeQuery();
 			
@@ -199,28 +191,25 @@ public class Preferencias {
 				String descricao = rs.getString("Descricao");
 				modelo.addElement(descricao);
 				
-				dadosLocais.add(descricao);
-				
-			}lstbxPreferencias.setModel(modelo);
-			
-		} catch (Exception ex) {
-			JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O BANCO DE DADOS" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-		}finally {
-			if (conn != null); {
-				try {
-					conn.close();
-				} catch (Exception ex) {
-					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO FECHAR CONEXÃO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-				}
+				dadosLocais.add(descricao);				
 			}
-		}				
+			conn.close();
+			
+			return modelo;
+		    
+		} catch (Exception ex) {
+			throw ex;
+		}
+			
+		
 	}
+
 	
-	public void ConsultarBd() {
+	public ResultSet ConsultarBd() throws Exception {
 		Connection conn = null;
 		
 		try {
-			modelo.setRowCount(0);
+			
 			String servDriver = "jdbc:ucanaccess://";
 			String bancoDeDados = "C:/Curso programar/Java/Preferencias/Preferencias_3_09022024.accdb";
 			String connectString = servDriver + bancoDeDados.trim();			
@@ -228,29 +217,24 @@ public class Preferencias {
 			
 			String sql = "SELECT ID, Descricao FROM Preferencias_3";			
 			PreparedStatement ps = conn.prepareStatement(sql);			
-			ResultSet rs = ps.executeQuery();
+			ResultSet rsPreferencias = ps.executeQuery();
 			
-			while (rs.next()) {
-				String id = rs.getString("ID");
-				String descricao = rs.getString("Descricao");
-				modelo.addRow(new Object[]{id, descricao});	
-								
-			}
-			
+			return rsPreferencias;				
+					
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "ERRO AO IMPORTAR O BANCO DE DADOS" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}finally {
 			if (conn != null); {
 				try {
 					conn.close();
 				} catch (Exception ex) {
-					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO FECHAR CONEXÃO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+					throw ex;
 				}
 			}
 		}				
 	}
 	
-	public void InserirBd(String strPreferenciasIncluidas) {
+	public Boolean InserirBd(String strPreferenciasIncluidas) throws Exception {
 		Connection conn = null;
 		
 		try {
@@ -262,26 +246,30 @@ public class Preferencias {
 			
 			String strSql = "INSERT INTO Preferencias_3 (Descricao) VALUES (?)";			
 			PreparedStatement psql = conn.prepareStatement(strSql);			
-			psql.setString(1,  strPreferenciasIncluidas);
-			psql.executeUpdate();
+			psql.setString(1,  strPreferenciasIncluidas);	
 			
-			conn.close();
+			if (psql.executeUpdate() > 0) {
+				resultado = true;
+			} else {
+				resultado = false;
+			}
 			
+			return resultado;
 			
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "ERRO AO IMPORTAR O BANCO DE DADOS" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}finally {
 			if (conn != null); {
 				try {
 					conn.close();
 				} catch (Exception ex) {
-					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO FECHAR CONEXÃO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+					throw ex;
 				}
 			}
 		}				
 	}
 	
-	public void DeletarBd(int id) {
+	public Boolean DeletarBd(int id) throws Exception {
 		Connection conn = null;
 		
 		try {
@@ -295,25 +283,29 @@ public class Preferencias {
 			String strSql = "DELETE FROM Preferencias_3 WHERE ID = ?";			
 			PreparedStatement psql = conn.prepareStatement(strSql);			
 			psql.setInt(1, id);
-			psql.executeUpdate();
 			
-			conn.close();
 			
+			if (psql.executeUpdate() > 0) {
+				resultado = true;
+			}else {
+				resultado = false;
+			}
+			return resultado;
 			
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "ERRO AO IMPORTAR O BANCO DE DADOS" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}finally {
 			if (conn != null); {
 				try {
 					conn.close();
 				} catch (Exception ex) {
-					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO FECHAR CONEXÃO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+					throw ex;
 				}
 			}
 		}				
 	}
 	
-	public void AlterarBd(String novaDescricao, int id) {
+	public Boolean AlterarBd(String novaDescricao, int id) throws Exception {
 		Connection conn = null;
 		
 		try {
@@ -328,21 +320,27 @@ public class Preferencias {
 			PreparedStatement psql = conn.prepareStatement(strSql);			
 			psql.setString(1, novaDescricao);
 			psql.setInt(2, id);
-			psql.executeUpdate();
 			
-			conn.close();
-			
+			if (psql.executeUpdate() > 0) {
+				resultado = true;
+			}else {
+				resultado = false;
+			}
+			return resultado;
+
 			
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "ERRO AO IMPORTAR O BANCO DE DADOS" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			throw ex;
 		}finally {
 			if (conn != null); {
 				try {
 					conn.close();
 				} catch (Exception ex) {
-					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO FECHAR CONEXÃO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+					throw ex;
 				}
 			}
 		}				
+					
 	}
 }
+

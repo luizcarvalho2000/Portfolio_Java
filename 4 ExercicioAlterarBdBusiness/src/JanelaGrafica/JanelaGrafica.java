@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.sql.ResultSet;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -27,6 +27,7 @@ public class JanelaGrafica {
 	JPanel dtgvwPreferencias;
 	DefaultTableModel modelo;
 	JTable table;
+	Preferencias objPreferencias;
 	
 	// Criando Janela Principal
 	
@@ -35,11 +36,11 @@ public class JanelaGrafica {
 		minhaJanela.setTitle("Janela Grafica");
 		minhaJanela.setSize(980, 500);
 		minhaJanela.setLocale(null);
-		minhaJanela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			
-			// iniciando componetes graficos
-
+		minhaJanela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);				
 		init();
+		ConsultarBd();
+		minhaJanela.setVisible(true);
+		
 
 	}
 	
@@ -53,6 +54,7 @@ public class JanelaGrafica {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(Prata);
+		minhaJanela.getContentPane().add(panel, BorderLayout.CENTER);	
 		
 		// Criando Tamanho dos componentes
 		
@@ -62,13 +64,8 @@ public class JanelaGrafica {
 		int intMargemSuperior =+ 10;
 		int intAltLstbx = 415;
 		int intLargLstbx = 240;
-		int intAltDtgvw = 250;
+		int intAltDtgvw = 415;
 		int intLargDtgvw = 240;
-		
-		// Adicionando panel a janela principal
-		
-		minhaJanela.getContentPane().add(panel, BorderLayout.CENTER);	
-		
 		
 		// Criando Botões
 		
@@ -313,11 +310,11 @@ public class JanelaGrafica {
 		TableColumnModel columnModel = table.getColumnModel();
 		TableColumn column = columnModel.getColumn(0);
 		column.setHeaderValue("ID");
+		column.setPreferredWidth(10);
 		column = columnModel.getColumn(1);
 		column.setHeaderValue("Descricao");
-		table.getTableHeader().repaint();	
-		
-		Preferencias preferencias = new Preferencias(minhaJanela, lstbxPreferencias, modelo);
+		column.setPreferredWidth(60);
+		table.getTableHeader().repaint();			
 		
 		
 		btnMensagem.addActionListener(new ActionListener() {
@@ -401,7 +398,8 @@ public class JanelaGrafica {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					
-					preferencias.impTxtWhile();					
+					objPreferencias = new Preferencias();
+					lstbxPreferencias.setModel(objPreferencias.impTxtWhile());					
 					
 				} catch (Exception ex) {
 					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -416,7 +414,8 @@ public class JanelaGrafica {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					
-					preferencias.impTxtDoWhile();
+					objPreferencias = new Preferencias();
+					lstbxPreferencias.setModel(objPreferencias.impTxtDoWhile());
 					
 				} catch (Exception ex) {
 					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -431,7 +430,8 @@ public class JanelaGrafica {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					
-					preferencias.impTxtFor();					
+					objPreferencias = new Preferencias();
+					lstbxPreferencias.setModel(objPreferencias.impTxtFor());					
 					
 				} catch (Exception ex) {
 					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -445,7 +445,8 @@ public class JanelaGrafica {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					preferencias.impTxtForEachInter();
+					objPreferencias = new Preferencias();
+					lstbxPreferencias.setModel(objPreferencias.impTxtForEachInter());
 					
 				} catch (Exception ex) {
 					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -459,7 +460,8 @@ public class JanelaGrafica {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					preferencias.impTxtForEachExter();
+					objPreferencias = new Preferencias();
+					lstbxPreferencias.setModel(objPreferencias.impTxtForEachExter());
 					
 				} catch (Exception ex) {
 					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O ARQUIVO" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -474,7 +476,8 @@ public class JanelaGrafica {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					preferencias.impBdConect();
+					objPreferencias = new Preferencias();
+					lstbxPreferencias.setModel(objPreferencias.impBdConect());
 					
 				} catch (Exception ex) {
 					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O BANCO DE DADOS" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -489,7 +492,8 @@ public class JanelaGrafica {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
-					preferencias.impBdDesconect();
+					objPreferencias = new Preferencias();
+					lstbxPreferencias.setModel(objPreferencias.impBdDesconect());
 					
 				} catch (Exception ex) {
 					JOptionPane.showConfirmDialog(minhaJanela, "ERRO AO IMPORTAR O BANCO DE DADOS" + ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
@@ -513,8 +517,8 @@ public class JanelaGrafica {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				preferencias.ConsultarBd();
-				
+				ConsultarBd();								
+					
 			}
 		});
 		
@@ -522,10 +526,9 @@ public class JanelaGrafica {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String strPreferenciasIncluidas = JOptionPane.showInputDialog(null, "DIGITE A PREFERENCIA A SER INCLUIDA");
-				preferencias.InserirBd(strPreferenciasIncluidas);
-				preferencias.ConsultarBd();
-				
+				InserirBd();
+				ConsultarBd();
+						
 			}
 		});
 		
@@ -533,20 +536,8 @@ public class JanelaGrafica {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JTable table = (JTable)((JScrollPane)dtgvwPreferencias.getComponent(0)).getViewport().getView();
-				int selectedRow = table.getSelectedRow();
-				if (selectedRow == -1) {
-					JOptionPane.showMessageDialog(null, "POR FAVOR, SELECIONE UMA LINHA PARA EXCLUIR!");
-					return;
-				}
-				
-				int id = Integer.parseInt((String) table.getValueAt(selectedRow, 0));
-				preferencias.DeletarBd(id);
-				
-				DefaultTableModel modelo = (DefaultTableModel) table.getModel();
-				modelo.removeRow(selectedRow);
-				modelo.fireTableDataChanged();
-				preferencias.ConsultarBd();
+				DeletarBd();
+				ConsultarBd();
 				
 			}
 		});
@@ -555,18 +546,8 @@ public class JanelaGrafica {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String novaDescricao = JOptionPane.showInputDialog(null, "DIGITE A NOVA DESCRIÇÃO DE PREFERENCIA:");
-				JTable table = (JTable)((JScrollPane)dtgvwPreferencias.getComponent(0)).getViewport().getView();
-				int selectedRow = table.getSelectedRow();
-				if (selectedRow == -1) {
-					JOptionPane.showMessageDialog(null, "POR FAVOR, SELECIONE UMA LINHA PARA ALTERAR!");
-					return;
-				}
-				
-				int id = Integer.parseInt((String) table.getValueAt(selectedRow, 0));			
-				
-				preferencias.AlterarBd(novaDescricao, id);
-				preferencias.ConsultarBd();
+				AlterarBd();
+				ConsultarBd();
 				
 			}
 		});
@@ -580,11 +561,95 @@ public class JanelaGrafica {
 			}
 		});	
 		
-		
-		minhaJanela.setVisible(true);
-		preferencias.ConsultarBd();
-		
 	}	
+	
+	public void ConsultarBd() {
+		try {
+			modelo.setRowCount(0);
+							
+			objPreferencias = new Preferencias();
+			ResultSet rsPreferencias = objPreferencias.ConsultarBd();
+			
+			while (rsPreferencias.next()) {
+				String id = rsPreferencias.getString("ID");
+				String descricao = rsPreferencias.getString("Descricao");
+				modelo.addRow(new Object[] {id, descricao});
+			}
+				
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(minhaJanela,  "Erro ao Executar" + ex.getMessage().toString());
+		}	
+	}
+	
+	public void InserirBd() {
+		try {
+			
+			String strPreferenciasIncluidas = JOptionPane.showInputDialog(null, "DIGITE A PREFERENCIA A SER INCLUIDA");
+			objPreferencias = new Preferencias();
+			
+			if (objPreferencias.InserirBd(strPreferenciasIncluidas)) {
+				JOptionPane.showMessageDialog(minhaJanela, "INSERIDO COM SUCESSO");
+			}else {
+				JOptionPane.showMessageDialog(minhaJanela, "ERRO AIO INSERIR");
+			}
+			objPreferencias.ConsultarBd();
+		}catch (Exception ex) {
+			JOptionPane.showMessageDialog(minhaJanela, "ERRO AO EXECULTAR" + ex.getMessage().toString());						
+		}		
+	}
+	
+	public void DeletarBd() {
+		try {					
+			
+			JTable table = (JTable)((JScrollPane)dtgvwPreferencias.getComponent(0)).getViewport().getView();
+			int selectedRow = table.getSelectedRow();
+			
+			if (selectedRow == -1) {
+				JOptionPane.showMessageDialog(null, "POR FAVOR, SELECIONE UMA LINHA PARA EXCLUIR!");
+				return;
+			}
+			
+			int id = Integer.parseInt((String) table.getValueAt(selectedRow, 0));
+			objPreferencias = new Preferencias();
+			
+			if (objPreferencias.DeletarBd(id)) {
+				JOptionPane.showMessageDialog(minhaJanela, "EXCLUIDO COM SUCESSO");
+			}else {
+				JOptionPane.showMessageDialog(minhaJanela, "ERRO AIO EXCLUIR");
+			}
+			objPreferencias.ConsultarBd();			
+			
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(minhaJanela, "ERRO AO EXECULTAR" + ex.getMessage().toString());
+		}				
+	}
+	
+	public void AlterarBd() {
+		try {
+			
+			String novaDescricao = JOptionPane.showInputDialog(null, "DIGITE A NOVA DESCRIÇÃO DE PREFERENCIA:");
+			JTable table = (JTable)((JScrollPane)dtgvwPreferencias.getComponent(0)).getViewport().getView();
+			int selectedRow = table.getSelectedRow();						
+			if (selectedRow == -1) {
+				JOptionPane.showMessageDialog(null, "POR FAVOR, SELECIONE UMA LINHA PARA ALTERAR!");
+				return;
+			}
+			
+			int id = Integer.parseInt((String) table.getValueAt(selectedRow, 0));		
+			objPreferencias = new Preferencias();
+			
+			if (objPreferencias.AlterarBd(novaDescricao, id)) {
+				JOptionPane.showMessageDialog(minhaJanela, "ALTERADO COM SUCESSO");
+			}else {
+				JOptionPane.showMessageDialog(minhaJanela, "ERRO AIO ALTERAR");
+			}
+			objPreferencias.ConsultarBd();
+			
+			
+		}  catch (Exception ex) {
+			JOptionPane.showMessageDialog(minhaJanela, "ERRO AO EXECULTAR" + ex.getMessage().toString());
+		}
+	}
 	
 	
 	public static void main (String[] args) {
